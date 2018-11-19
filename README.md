@@ -1,4 +1,4 @@
-Composer Template
+WP Post List Converter
 =========================
 
-Template for easily making composer projects.
+Convert WordPress's list of posts into hierarchical list easier to work with.
