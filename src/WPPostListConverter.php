@@ -194,7 +194,7 @@ namespace WaughJ\WPPostListConverter
 		}
 
 		private $args;
-		private const VALID_TYPES =
+		const VALID_TYPES =
 		[
 			'normal',
 			'menu'
