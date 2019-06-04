@@ -1,13 +1,12 @@
 <?php
 
 declare( strict_types = 1 );
-namespace WaughJ\WPPostListConverter
-{
-	use function WaughJ\TestHashItem\TestHashItemArray;
-	use function WaughJ\TestHashItem\TestHashItemString;
+namespace WaughJ\WPPostListConverter;
 
-	class WPPostListConverter
-	{
+use WaughJ\TestHashItem\TestHashItem;
+
+class WPPostListConverter
+{
 
 	//
 	//  PUBLIC
@@ -20,7 +19,7 @@ namespace WaughJ\WPPostListConverter
 			$this->args[ 'type' ] = self::decideType( $args );
 		}
 
-		public function getConvertedList( array $wordpress_menu_data )
+		public function getConvertedList( array $wordpress_menu_data ) : array
 		{
 			$new_menu = [];
 
@@ -143,7 +142,7 @@ namespace WaughJ\WPPostListConverter
 		private function getIncludes( \WP_Post $wordpress_item ) : array
 		{
 			$rows = [];
-			$includes = TestHashItemArray( $this->args, 'includes', false );
+			$includes = TestHashItem::getArray( $this->args, 'includes', false );
 			if ( $includes !== false )
 			{
 				foreach ( $includes as $include_key => $include_value )
@@ -189,7 +188,7 @@ namespace WaughJ\WPPostListConverter
 
 		private static function decideType( array $args ) : string
 		{
-			$type = TestHashItemString( $args, 'type', self::VALID_TYPES[ 0 ] );
+			$type = TestHashItem::getString( $args, 'type', self::VALID_TYPES[ 0 ] );
 			return in_array( $type, self::VALID_TYPES ) ? $type : self::VALID_TYPES[ 0 ];
 		}
 
@@ -199,5 +198,4 @@ namespace WaughJ\WPPostListConverter
 			'normal',
 			'menu'
 		];
-	}
 }

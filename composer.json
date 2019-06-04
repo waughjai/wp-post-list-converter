@@ -2,7 +2,7 @@
     "name": "waughj/wp-post-list-converter",
     "description": "Convert WordPress's list of posts into hierarchical list easier to work with.",
     "keywords": [ "wordpress", "list", "converter" ],
-    "license": "GPL-2.0-or-later",
+    "license": "AGPL-3.0-or-later",
     "authors": [
         {
             "name": "Jaimeson Waugh",
@@ -12,10 +12,10 @@
     "type": "library",
     "require": {
 		"php": ">=7.0",
-		"waughj/test-hash-item": ">=1.0.1"
+		"waughj/test-hash-item": ">=2.0.0"
     },
     "require-dev": {
-		"phpunit/phpunit": "6.*"
+		"phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": {
