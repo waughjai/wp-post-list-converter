@@ -7,77 +7,58 @@ use WaughJ\WPPostListConverter\WPPostListConverter;
 
 class WPPostListConverterTest extends TestCase
 {
-	public function testIsArray()
-	{
-		$converter = new WPPostListConverter([ 'type' => 'menu' ]);
-		$this->assertTrue( is_array( $converter->getConvertedList( $this->getWPList() ) ) );
-	}
-
 	public function testHasExpectedValues()
 	{
+		global $menu;
 		$converter = new WPPostListConverter([ 'type' => 'menu' ]);
-		$list = $converter->getConvertedList( $this->getWPList() );
+		$list = $converter->getConvertedList( $menu );
 		$this->assertTrue( !empty( $list ) );
 		$this->assertEquals( 1, count( $list ) );
 
 		foreach( $list as $list_item )
 		{
-			$this->assertTrue( is_array( $list_item ) );
-			$this->assertTrue( array_key_exists( 'id', $list_item ) );
-			$this->assertTrue( array_key_exists( 'title', $list_item ) );
-			$this->assertTrue( array_key_exists( 'url', $list_item ) );
-			$this->assertTrue( array_key_exists( 'subnav', $list_item ) );
 			$this->assertEquals( 1, $list_item[ 'id' ] );
+			$this->assertEquals( 2, $list_item[ 'object_id' ] );
 			$this->assertEquals( "Some Post", $list_item[ 'title' ] );
 			$this->assertEquals( 'https://www.jaimeson-waugh.com', $list_item[ 'url' ] );
+			$this->assertEquals( 'nav_menu_item', $list_item[ 'type' ] );
+			$this->assertEquals( 'post', $list_item[ 'object_type' ] );
 
 			foreach( $list_item[ 'subnav' ] as $subitem )
 			{
-				$this->assertTrue( is_array( $subitem ) );
-				$this->assertTrue( array_key_exists( 'id', $subitem ) );
-				$this->assertTrue( array_key_exists( 'title', $subitem ) );
-				$this->assertTrue( array_key_exists( 'url', $subitem ) );
 				$this->assertEquals( 2, $subitem[ 'id' ] );
+				$this->assertEquals( 4, $subitem[ 'object_id' ] );
 				$this->assertEquals( "Some Post Child", $subitem[ 'title' ] );
 				$this->assertEquals( 'https://www.jaimeson-waugh.com', $subitem[ 'url' ] );
+				$this->assertEquals( 'nav_menu_item', $subitem[ 'type' ] );
+				$this->assertEquals( 'post', $subitem[ 'object_type' ] );
 			}
 		}
 	}
 
 	public function testNormalListConverter()
 	{
+		global $post_list;
 		$converter = new WPPostListConverter([ 'type' => 'normal' ]);
-		$list = $converter->getConvertedList( $this->getWPList() );
+		$list = $converter->getConvertedList( $post_list );
 		$this->assertTrue( !empty( $list ) );
-		$this->assertEquals( 1, count( $list ) );
+		$this->assertEquals( 3, count( $list ) );
 
 		foreach( $list as $list_item )
 		{
-			$this->assertTrue( is_array( $list_item ) );
-			$this->assertTrue( array_key_exists( 'id', $list_item ) );
-			$this->assertTrue( array_key_exists( 'title', $list_item ) );
-			$this->assertTrue( array_key_exists( 'url', $list_item ) );
-			$this->assertTrue( array_key_exists( 'subnav', $list_item ) );
-			$this->assertEquals( 1, $list_item[ 'id' ] );
-			$this->assertEquals( "Some Post", $list_item[ 'title' ] );
-			$this->assertEquals( 'https://www.jaimeson-waugh.com', $list_item[ 'url' ] );
+			$this->assertEquals( $list_item[ 'id' ], $list_item[ 'object_id' ] );
+			$this->assertEquals( 'post', $list_item[ 'type' ] );
+			$this->assertEquals( 'post', $list_item[ 'object_type' ] );
 
-			foreach( $list_item[ 'subnav' ] as $subitem )
+			if ( array_key_exists( 'subnav', $list_item ) )
 			{
-				$this->assertTrue( is_array( $subitem ) );
-				$this->assertTrue( array_key_exists( 'id', $subitem ) );
-				$this->assertTrue( array_key_exists( 'title', $subitem ) );
-				$this->assertTrue( array_key_exists( 'url', $subitem ) );
-				$this->assertEquals( 2, $subitem[ 'id' ] );
-				$this->assertEquals( "Some Post Child", $subitem[ 'title' ] );
-				$this->assertEquals( 'https://www.jaimeson-waugh.com', $subitem[ 'url' ] );
+				foreach( $list_item[ 'subnav' ] as $subitem )
+				{
+					$this->assertEquals( $subitem[ 'id' ], $subitem[ 'object_id' ] );
+					$this->assertEquals( 'post', $subitem[ 'type' ] );
+					$this->assertEquals( 'post', $subitem[ 'object_type' ] );
+				}
 			}
 		}
-	}
-
-	private function getWPList() : array
-	{
-		global $post_list;
-		return $post_list;
 	}
 }

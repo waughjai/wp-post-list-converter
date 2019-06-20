@@ -131,9 +131,17 @@ class WPPostListConverter
 			return array_merge
 			(
 				[
-					'id'    => $wordpress_item->ID,
-					'title' => $this->getItemTitle( $wordpress_item ),
-					'url'   => $this->getItemURL( $wordpress_item )
+					'id'          => $wordpress_item->ID,
+					'title'       => $this->getItemTitle( $wordpress_item ),
+					'url'         => $this->getItemURL( $wordpress_item ),
+					'type'        => $wordpress_item->post_type,
+					'description' => $this->getItemDescription( $wordpress_item ),
+					'object_id'   => $this->getItemObjectID( $wordpress_item ),
+					'object_type' => $this->getItemObjectType( $wordpress_item ),
+					'target'      => $this->getItemTarget( $wordpress_item ),
+					'xfn'         => $this->getItemXFN( $wordpress_item ),
+					'classes'     => $this->getItemClasses( $wordpress_item ),
+					'title_attr'  => $this->getItemTitleAttribute( $wordpress_item )
 				],
 				$this->getIncludes( $wordpress_item )
 			);
@@ -166,9 +174,49 @@ class WPPostListConverter
 			return $this->args[ 'type' ] === 'menu' ? $menu_item->url : get_permalink( $menu_item );
 		}
 
+		private function getItemDescription( \WP_Post $menu_item ) : string
+		{
+			return $this->args[ 'type' ] === 'menu' ? $menu_item->description : get_the_excerpt( $menu_item );
+		}
+
+		private function getItemObjectID( \WP_Post $menu_item ) : int
+		{
+			return $this->args[ 'type' ] === 'menu' ? intval( $menu_item->object_id ) : $menu_item->ID;
+		}
+
 		private function getItemTitle( \WP_Post $menu_item ) : string
 		{
 			return $menu_item->{ $this->getTitleTypeName() };
+		}
+
+		private function getItemType( \WP_Post $menu_item ) : string
+		{
+			return $this->args[ 'type' ] === 'menu' ? 'nav_menu_item' : $menu_item->post_type;
+		}
+
+		private function getItemObjectType( \WP_Post $menu_item ) : string
+		{
+			return $this->args[ 'type' ] === 'menu' ? $menu_item->object : $menu_item->post_type;
+		}
+
+		private function getItemTarget( \WP_Post $menu_item ) : ?string
+		{
+			return $this->args[ 'type' ] === 'menu' ? $menu_item->target : null;
+		}
+
+		private function getItemXFN( \WP_Post $menu_item ) : ?string
+		{
+			return $this->args[ 'type' ] === 'menu' ? $menu_item->xfn : null;
+		}
+
+		private function getItemClasses( \WP_Post $menu_item ) : ?array
+		{
+			return $this->args[ 'type' ] === 'menu' ? $menu_item->classes : null;
+		}
+
+		private function getItemTitleAttribute( \WP_Post $menu_item ) : ?string
+		{
+			return $this->args[ 'type' ] === 'menu' ? $menu_item->attr_title : null;
 		}
 
 		private function getTitleTypeName() : string
@@ -193,7 +241,7 @@ class WPPostListConverter
 		}
 
 		private $args;
-		const VALID_TYPES =
+		private const VALID_TYPES =
 		[
 			'normal',
 			'menu'

@@ -11,7 +11,7 @@
     ],
     "type": "library",
     "require": {
-		"php": ">=7.0",
+		"php": ">=7.2",
 		"waughj/test-hash-item": ">=2.0.0"
     },
     "require-dev": {
