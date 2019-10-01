@@ -74,7 +74,7 @@ class WPPostListConverter
 		private function testListForSubItem( array &$new_menu, \WP_Post $wordpress_menu_item ) : bool
 		{
 			// Look for parent of child menu item & give new item to them.
-			foreach ( $new_menu as $new_menu_key => $new_menu_item )
+			foreach ( $new_menu as $new_menu_key => &$new_menu_item )
 			{
 				// If parent is found...
 				if ( $new_menu_key == $this->getItemParent( $wordpress_menu_item ) )

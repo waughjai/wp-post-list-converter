@@ -13,8 +13,20 @@ Takes in an array o’ arguments: "type" tells converter whether list is o’ re
 
 ## Changelog
 
+### 0.2.1
+* Fix bug causing 3rd-layer & onward subnavs to not work
+
 ### 0.2.0
-* Add extra menu item data collected by default.
+* Add extra menu item data collected by default
+
+### 0.1.3
+* Update TestHashItem Dependency
+
+### 0.1.2
+* Make Compatible with WordPress Plugin Rules
+
+### 0.1.1
+* Add Readme
 
 ### 0.1.0
 * Initial Release
